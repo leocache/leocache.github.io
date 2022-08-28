@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"myblog-qjb8n4gl-leocache.4everland.app","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这是学习JavaWeb过程中和以往相比做的比较复杂的小项目，是通过tymeleaf进行渲染的B&#x2F;S（浏览器&#x2F;服务器）小项目，课程链接：尚硅谷丨2022版JavaWeb教程(全新技术栈,全程实战)，尚硅谷，yyds!!!由于不想花过多的时间在前端上，所以HTML&#x2F;CSS&#x2F;JavaScript页面模板大多直接使用的课程资料，就自己模仿着做了一个添加日志和注册的页面。听视频介绍这个项目的主要目的就是手撕">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb QQZone项目架构总结">
+<meta property="og:url" content="https://myblog-qjb8n4gl-leocache.4everland.app/2022/08/28/21-58-21/index.html">
+<meta property="og:site_name" content="LeoCache的博客">
+<meta property="og:description" content="这是学习JavaWeb过程中和以往相比做的比较复杂的小项目，是通过tymeleaf进行渲染的B&#x2F;S（浏览器&#x2F;服务器）小项目，课程链接：尚硅谷丨2022版JavaWeb教程(全新技术栈,全程实战)，尚硅谷，yyds!!!由于不想花过多的时间在前端上，所以HTML&#x2F;CSS&#x2F;JavaScript页面模板大多直接使用的课程资料，就自己模仿着做了一个添加日志和注册的页面。听视频介绍这个项目的主要目的就是手撕">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/0f92b0bf7a334e19b558dd11a9016fcb.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/03615e06056d4441bbbc2d0ccd33dd0f.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/43bdac75548147a9a3e7ad63d4bebf91.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/578830b8768e4587984ac241200b909b.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/65a6f68cbe8f4e43a2beed5ff4b3bb94.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/1ec1501953a745419a283053899c3f23.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f2f6a93c0e3045a9a556fd1d1055301d.png#pic_center">
+<meta property="article:published_time" content="2022-08-28T13:58:21.000Z">
+<meta property="article:modified_time" content="2022-08-28T13:58:49.796Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/0f92b0bf7a334e19b558dd11a9016fcb.png#pic_center">
+
+
+<link rel="canonical" href="https://myblog-qjb8n4gl-leocache.4everland.app/2022/08/28/21-58-21/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://myblog-qjb8n4gl-leocache.4everland.app/2022/08/28/21-58-21/","path":"2022/08/28/21-58-21/","title":"JavaWeb QQZone项目架构总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JavaWeb QQZone项目架构总结 | LeoCache的博客</title>
+  
+
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LeoCache的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">用工程师的浪漫照亮科技的未来</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">一、开发环境：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B5%81%E7%A8%8B%E5%9B%BE%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">二、流程图：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%B8%BB%E8%A6%81%E6%A8%A1%E5%9D%97"><span class="nav-number">3.</span> <span class="nav-text">三、主要模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8%E5%92%8CIOC%E5%AE%B9%E5%99%A8%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">监听器和IOC容器：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DispatcherServlet"><span class="nav-number">3.2.</span> <span class="nav-text">DispatcherServlet:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller%E3%80%81Service%E3%80%81DAO%EF%BC%9A"><span class="nav-number">3.3.</span> <span class="nav-text">Controller、Service、DAO：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%BB%E8%A6%81%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">四、遇到的主要问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%A1%B9%E7%9B%AE%E5%85%B3%E8%81%94%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">4.0.1.</span> <span class="nav-text">1、项目关联包问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E9%97%AE%E9%A2%98"><span class="nav-number">4.0.2.</span> <span class="nav-text">2、类加载器问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81LocalDateTime%E7%B1%BB%E8%BD%AC%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">4.0.3.</span> <span class="nav-text">3、LocalDateTime类转化问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81tymeleaf%E6%B8%B2%E6%9F%93%E9%97%AE%E9%A2%98"><span class="nav-number">4.0.4.</span> <span class="nav-text">4、tymeleaf渲染问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%83%A8%E5%88%86%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">六、部分结果展示：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/images/1652351988342.jpg">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description">学习 分享 积累</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/leocache" title="https:&#x2F;&#x2F;github.com&#x2F;leocache" rel="noopener" target="_blank">github</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/weixin_51342637?type=blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_51342637?type&#x3D;blog" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://myblog-qjb8n4gl-leocache.4everland.app/2022/08/28/21-58-21/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1652351988342.jpg">
+      <meta itemprop="name" content="Leo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LeoCache的博客">
+      <meta itemprop="description" content="学习 分享 积累">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JavaWeb QQZone项目架构总结 | LeoCache的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaWeb QQZone项目架构总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-08-28 21:58:21 / 修改时间：21:58:49" itemprop="dateCreated datePublished" datetime="2022-08-28T21:58:21+08:00">2022-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这是学习JavaWeb过程中和以往相比做的比较复杂的小项目，是通过tymeleaf进行渲染的B/S（浏览器/服务器）小项目，课程链接：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1AS4y177xJ?p=1">尚硅谷丨2022版JavaWeb教程(全新技术栈,全程实战)</a>，尚硅谷，yyds!!!<br>由于不想花过多的时间在前端上，所以HTML/CSS/JavaScript页面模板大多直接使用的课程资料，就自己模仿着做了一个添加日志和注册的页面。听视频介绍这个项目的主要目的就是手撕简约版Spring MVC框架，为了后面学习框架相对轻松一点。第一次实现了数据库、后台程序、前端页面的交互，还是很有意思，所以写下来理清自己的思路，为了自己更好的理解，也欢迎大家纠错更正。</p>
+<h2 id="一、开发环境："><a href="#一、开发环境：" class="headerlink" title="一、开发环境："></a>一、开发环境：</h2><p>jdk8+MySQL8+tomcat8.5(课程中用的数据库是MySQL5，由于版本不同有些细节不同也耽误了不少时间，下面会提到)</p>
+<h2 id="二、流程图："><a href="#二、流程图：" class="headerlink" title="二、流程图："></a>二、流程图：</h2><p><img src="https://img-blog.csdnimg.cn/0f92b0bf7a334e19b558dd11a9016fcb.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="三、主要模块"><a href="#三、主要模块" class="headerlink" title="三、主要模块"></a>三、主要模块</h2><h3 id="监听器和IOC容器："><a href="#监听器和IOC容器：" class="headerlink" title="监听器和IOC容器："></a>监听器和IOC容器：</h3><p>一旦监听到服务器启动，开始调用BeanFactory创建容器，通过读取配置文件中的标签内容，将后续的Controller类、Service类、DAO类实例化保存。并且建立依赖关系，比如说操作日志相关内容的控制器TopicController里面用到了TopicService，那么直接将刚刚实例化的TopicService赋值到TopicController中，这就是“控制反转”和“依赖注入”。以往我们写程序，一个对象里面需要另一个对象我们就让前者自己直接new出来，但是这样会导致对象依赖和耦合严重，不利于代码维护。为了实现“高内聚，低耦合”的架构，我们现在把创建对象的权利全部交给第三方，即“控制反转”，然后再通过配置文件中的信息进行“依赖注入”，达到解除耦合的目的。</p>
+<h3 id="DispatcherServlet"><a href="#DispatcherServlet" class="headerlink" title="DispatcherServlet:"></a>DispatcherServlet:</h3><p>作为核心响应调度，它的工作是拦截获取到浏览器的（A.do?opetate=B）请求，通过字符串处理，在IOC容器中查找到处理该A请求的指定Controller类，再通过反射找到B方法，进行方法参数赋值调用方法。</p>
+<p>把MVC中的V即“view‘也放在dispatcherServlet中，控制器进行操作后需要给dispatcherServlet返回一个字符串，dispatcherServlet通过该字符串判断下一步工作，是继续调用其他控制器，还是直接返回页面给浏览器。</p>
+<h3 id="Controller、Service、DAO："><a href="#Controller、Service、DAO：" class="headerlink" title="Controller、Service、DAO："></a>Controller、Service、DAO：</h3><p>Controller作为控制器提供一些方法供浏览器选择，比如说浏览器端需要执行日志（Topic）添加工作，那需要调用TopicController中的addTopic()方法，再比如需要执行登录操作，当用户点击“登录”按键时浏览器就调用了UserBasicController（UserBasic是用户信息类，登录时需要查询用户信息，所以调用它的Controller）中的login方法。Service就是业务方法，比如说Controller现在整理好了浏览器发来的日志添加内容，需要保存到数据库了，它就调用相应的Service方法，Service再看看有什么需要封装整理的，然后再调用DAO方法，至于DAO就是JDBC中的内容，应该很熟悉了。</p>
+<h2 id="四、遇到的主要问题"><a href="#四、遇到的主要问题" class="headerlink" title="四、遇到的主要问题"></a>四、遇到的主要问题</h2><h4 id="1、项目关联包问题"><a href="#1、项目关联包问题" class="headerlink" title="1、项目关联包问题"></a>1、项目关联包问题</h4><p>异常：java.lang.IllegalStateException: 启动子级时出错</p>
+<p>注意操作顺序！一定要先关联上lib下的各种驱动包、添加上tomcat、然后再打包成Artifacts进行部署。刚开始就遇到了找不到MySQL驱动器的问题，原因是将新建的项目一开始就打包成了Artifacts，然后再关联，这样的话Artifacts进行部署时里面当然没有我们关联的驱动。出现这样的问题解决很简单，不需要你删除Artifacts后再添加，只需要Project Structer下面的problems就可以解决。</p>
+<h4 id="2、类加载器问题"><a href="#2、类加载器问题" class="headerlink" title="2、类加载器问题"></a>2、类加载器问题</h4><p>异常：java.lang.NullPointerException<br>    at java.util.Properties$LineReader.readLine(Properties.java:434)<br>    at java.util.Properties.load0(Properties.java:353)<br>    at java.util.Properties.load(Properties.java:341)</p>
+<p>这个问题我解决了好久，抛出的异常就是在获取数据库链接的时候无法读到你的properties配置文件，无法获取链接。就是这一句出了问题：InputStream stream=ClassLoader.getSystemClassLoader().getResourceAsStream(“jdbc.properties”);</p>
+<p>于是我做了个单元测试，在idea里面明明可以获取链接，但是到tomcat服务器上就不行。然后我在评论区下发现了一个留言，需要改成：InputStream stream =JDBCUtils.class.getClassLoader().getResourceAsStream(“jdbc.properties”)，我一试果然成功，为什么出现这样的情况呢，说到底是路径问题：</p>
+<p>你可以尝试在idea下和在tomcat环境下分别执行以上两句，你会发现在idea下两个得到的路径是相同的，都是当前项目的src下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(JDBCUtils.class.getClassLoader().getResource(<span class="string">&quot;&quot;</span>));</span><br><span class="line">System.out.println(ClassLoader.getSystemClassLoader().getResource(<span class="string">&quot;&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/03615e06056d4441bbbc2d0ccd33dd0f.png#pic_center" alt="在这里插入图片描述"><br>但是同样的代码在tomcat调用时：<br><img src="https://img-blog.csdnimg.cn/43bdac75548147a9a3e7ad63d4bebf91.png#pic_center" alt="在这里插入图片描述"></p>
+<p>会发现InputStream stream =JDBCUtils.class.getClassLoader().getResourceAsStream(“jdbc.properties”) 调用的路径是artifacts打包后的“src”目录，是正确的。而InputStream stream=ClassLoader.getSystemClassLoader().getResourceAsStream(“jdbc.properties”);得到的是null。</p>
+<h4 id="3、LocalDateTime类转化问题"><a href="#3、LocalDateTime类转化问题" class="headerlink" title="3、LocalDateTime类转化问题"></a>3、LocalDateTime类转化问题</h4><p>异常：java.lang.IllegalArgumentException: Can not set java.util.Date field com.guoliang.qqzone.pojo.Topic.topicDate to java.time.LocalDateTime</p>
+<p>当调用DAO时一旦发现异常can not set A to B，就是你不能把B类型赋值给A。</p>
+<p>视频中老师讲的时候是没有这个问题的，因为老师用的是MySQL5,这个问题应该是MySQL8驱动引入的。该项目数据库中的Date全部是DateTime，对应的Java中是LocalDateTime或者TimeStamp，而我们Java中设定的全部是Date。</p>
+<p>解决方法：1、将pojo类中的Date全部转化为LocalDateTime</p>
+<p>​                    2、BaseDAO中加上以下代码进行转化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//LocalDateTime需要转化</span></span><br><span class="line">            <span class="keyword">if</span> (propertyValue.getClass().toString().equals(<span class="string">&quot;class java.time.LocalDateTime&quot;</span>)) &#123;</span><br><span class="line">                propertyValue = Timestamp.valueOf((LocalDateTime) propertyValue);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4、tymeleaf渲染问题"><a href="#4、tymeleaf渲染问题" class="headerlink" title="4、tymeleaf渲染问题"></a>4、tymeleaf渲染问题</h4><p>写好的前端页面展示出来发现与我们所想不一样，这个问题老师也遇到了，再上一个项目中老师一直没有发现，但是这个项目老师成功解决了这个问题。问题根源在于既然使用了tymeleaf，你就不能直接调用网页，必须经过DispactureServlet中的视图模块进行调用渲染，否则你页面上的所有“th:”都无法识别。</p>
+<h2 id="六、部分结果展示："><a href="#六、部分结果展示：" class="headerlink" title="六、部分结果展示："></a>六、部分结果展示：</h2><p><img src="https://img-blog.csdnimg.cn/578830b8768e4587984ac241200b909b.png#pic_center" alt="登录"><br><img src="https://img-blog.csdnimg.cn/65a6f68cbe8f4e43a2beed5ff4b3bb94.png#pic_center" alt="主页面"><br><img src="https://img-blog.csdnimg.cn/1ec1501953a745419a283053899c3f23.png#pic_center" alt="回复"><br><img src="https://img-blog.csdnimg.cn/f2f6a93c0e3045a9a556fd1d1055301d.png#pic_center" alt="添加日志"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+          <div class="post-tags">
+              <a href="/tags/JavaWeb/" rel="tag"># JavaWeb</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/28/11-08-08/" rel="prev" title="实验六 信号量实现进程同步">
+                  <i class="fa fa-chevron-left"></i> 实验六 信号量实现进程同步
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+</body>
+</html>
