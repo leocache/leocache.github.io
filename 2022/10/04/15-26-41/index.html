@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"myblog-qjb8n4gl-leocache.4everland.app","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于SSM的CRUD项目准备工作​    该项目是基于SSM的增删改查项目，前端淘汰了过时的jsp技术，通过Bootstrap+vue+Thymeleaf实现。完整项目下载链接 一、SSM文件配置1、web.xml 编码过滤器和处理请求方式过滤器 DispatcherServlet前端控制器（要引入SpringMVC.xml配置文件路径） 引入Spring配置文件路径 Spring监听器Conte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于SSM的CRUD项目准备工作">
+<meta property="og:url" content="https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/04/15-26-41/index.html">
+<meta property="og:site_name" content="LeoCache的博客">
+<meta property="og:description" content="基于SSM的CRUD项目准备工作​    该项目是基于SSM的增删改查项目，前端淘汰了过时的jsp技术，通过Bootstrap+vue+Thymeleaf实现。完整项目下载链接 一、SSM文件配置1、web.xml 编码过滤器和处理请求方式过滤器 DispatcherServlet前端控制器（要引入SpringMVC.xml配置文件路径） 引入Spring配置文件路径 Spring监听器Conte">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-04T07:26:41.000Z">
+<meta property="article:modified_time" content="2022-10-04T07:26:59.633Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/04/15-26-41/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/04/15-26-41/","path":"2022/10/04/15-26-41/","title":"基于SSM的CRUD项目准备工作"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于SSM的CRUD项目准备工作 | LeoCache的博客</title>
+  
+
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LeoCache的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">用工程师的浪漫照亮科技的未来</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8ESSM%E7%9A%84CRUD%E9%A1%B9%E7%9B%AE%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">基于SSM的CRUD项目准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81SSM%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">一、SSM文件配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81web-xml"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1、web.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81SpringMVC-xml"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">2、SpringMVC.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81Spring-xml"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">3、Spring.xml</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%BD%BF%E7%94%A8%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">二、创建数据表使用逆向工程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">1、创建数据表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%AE%8C%E6%88%90%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%8C%E6%9B%B4%E6%94%B9%E7%94%9F%E6%88%90%E7%9A%84mapper"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">2、完成逆向工程，更改生成的mapper</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/images/1652351988342.jpg">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description">学习 分享 积累</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/leocache" title="https:&#x2F;&#x2F;github.com&#x2F;leocache" rel="noopener" target="_blank">github</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/weixin_51342637?type=blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_51342637?type&#x3D;blog" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/04/15-26-41/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1652351988342.jpg">
+      <meta itemprop="name" content="Leo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LeoCache的博客">
+      <meta itemprop="description" content="学习 分享 积累">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="基于SSM的CRUD项目准备工作 | LeoCache的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于SSM的CRUD项目准备工作
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-04 15:26:41 / 修改时间：15:26:59" itemprop="dateCreated datePublished" datetime="2022-10-04T15:26:41+08:00">2022-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基于SSM的CRUD项目准备工作"><a href="#基于SSM的CRUD项目准备工作" class="headerlink" title="基于SSM的CRUD项目准备工作"></a>基于SSM的CRUD项目准备工作</h1><p>​    该项目是基于SSM的增删改查项目，前端淘汰了过时的jsp技术，通过Bootstrap+vue+Thymeleaf实现。<a target="_blank" rel="noopener" href="https://download.csdn.net/download/weixin_51342637/86734403">完整项目下载链接</a></p>
+<h2 id="一、SSM文件配置"><a href="#一、SSM文件配置" class="headerlink" title="一、SSM文件配置"></a>一、SSM文件配置</h2><h4 id="1、web-xml"><a href="#1、web-xml" class="headerlink" title="1、web.xml"></a>1、web.xml</h4><ul>
+<li>编码过滤器和处理请求方式过滤器</li>
+<li>DispatcherServlet前端控制器（要引入SpringMVC.xml配置文件路径）</li>
+<li>引入Spring配置文件路径</li>
+<li>Spring监听器ContextConfigLocation</li>
+</ul>
+<h4 id="2、SpringMVC-xml"><a href="#2、SpringMVC-xml" class="headerlink" title="2、SpringMVC.xml"></a>2、SpringMVC.xml</h4><ul>
+<li>扫描控制层组件</li>
+<li>视图解析器Thymeleaf</li>
+<li>配置默认Servlet处理静态资源</li>
+<li>开启MVC注解驱动</li>
+<li>配置视图控制器</li>
+</ul>
+<h4 id="3、Spring-xml"><a href="#3、Spring-xml" class="headerlink" title="3、Spring.xml"></a>3、Spring.xml</h4><ul>
+<li>扫描除控制层以外组件</li>
+<li>配置数据源（先引用数据库配置文件）</li>
+<li>配置SqlSessionFactoryBean</li>
+<li>配置mapper接口的扫描</li>
+</ul>
+<h2 id="二、创建数据表使用逆向工程"><a href="#二、创建数据表使用逆向工程" class="headerlink" title="二、创建数据表使用逆向工程"></a>二、创建数据表使用逆向工程</h2><h4 id="1、创建数据表"><a href="#1、创建数据表" class="headerlink" title="1、创建数据表"></a>1、创建数据表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `tbl_stu` (</span><br><span class="line">  `stu_id` int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `stu_name` varchar(2295) DEFAULT NULL,</span><br><span class="line">  `gender` char(9) DEFAULT NULL,</span><br><span class="line">  `email` varchar(2295) DEFAULT NULL,</span><br><span class="line">  `d_id` int DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`stu_id`)</span><br><span class="line">)</span><br><span class="line">CREATE TABLE `tbl_dept` (</span><br><span class="line">  `dept_id` int NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `dept_name` varchar(765) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`dept_id`)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2、完成逆向工程，更改生成的mapper"><a href="#2、完成逆向工程，更改生成的mapper" class="headerlink" title="2、完成逆向工程，更改生成的mapper"></a>2、完成逆向工程，更改生成的mapper</h4><p>​    先完成generatorConfig.xml文件的配置，再使用逆向工程插件生成数据表对应的Pojo、Mapper和sql接口映射文件。因为自动生成的查询学生只能得到他所在的部门id，我们想让每次查询都能直接得到对应的部门信息，所以需要对自动生成的类进行一些修改，步骤如下：</p>
+<ul>
+<li>Student类中添加Department属性</li>
+</ul>
+<ul>
+<li><p>原mapper接口中有方法</p>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Student&gt; <span class="title function_">selectByExample</span><span class="params">(StudentExample example)</span>;</span><br><span class="line">Student <span class="title function_">selectByPrimaryKey</span><span class="params">(Integer stuId)</span>;</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p>​     我们再添加两个：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> List&lt;Student&gt; <span class="title function_">selectByExampleWithDept</span><span class="params">(StudentExample example)</span>;</span><br><span class="line">Student <span class="title function_">selectByPrimaryKeyWithDept</span><span class="params">(Integer stuId)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>StudentMapper.xml中进行修改，其实都是复制原有自动生成的，再进行稍微修改实现分步查询。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">&lt;!--带上部门后的resultMap--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">&quot;BaseResultMapWithDept&quot;</span> <span class="attr">type</span>=<span class="string">&quot;com.guoliang.ssm.pojo.Student&quot;</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">&quot;stu_id&quot;</span> <span class="attr">property</span>=<span class="string">&quot;stuId&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;INTEGER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;stu_name&quot;</span> <span class="attr">property</span>=<span class="string">&quot;stuName&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;gender&quot;</span> <span class="attr">property</span>=<span class="string">&quot;gender&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;CHAR&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;email&quot;</span> <span class="attr">property</span>=<span class="string">&quot;email&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;VARCHAR&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">&quot;d_id&quot;</span> <span class="attr">property</span>=<span class="string">&quot;dId&quot;</span> <span class="attr">jdbcType</span>=<span class="string">&quot;INTEGER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">association</span> <span class="attr">property</span>=<span class="string">&quot;department&quot;</span></span></span><br><span class="line"><span class="tag">                 <span class="attr">select</span>=<span class="string">&quot;com.guoliang.ssm.mapper.DepartmentMapper.selectByPrimaryKey&quot;</span></span></span><br><span class="line"><span class="tag">                 <span class="attr">column</span>=<span class="string">&quot;d_id&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">association</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectByExampleWithDept&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;BaseResultMapWithDept&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;com.guoliang.ssm.pojo.StudentExample&quot;</span> &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectByPrimaryKeyWithDept&quot;</span> <span class="attr">resultMap</span>=<span class="string">&quot;BaseResultMapWithDept&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;java.lang.Integer&quot;</span> &gt;</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+          <div class="post-tags">
+              <a href="/tags/JavaWeb/" rel="tag"># JavaWeb</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/28/21-58-21/" rel="prev" title="JavaWeb QQZone项目架构总结">
+                  <i class="fa fa-chevron-left"></i> JavaWeb QQZone项目架构总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+</body>
+</html>
