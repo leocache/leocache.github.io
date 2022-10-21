@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"myblog-qjb8n4gl-leocache.4everland.app","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="【最新敲简单】微信早安推送 +页面总控， JAVA版本，一键部署运行——保姆级教程一、项目简介​    一个浪漫的早安推送小项目，采用Java+SpringBoot框架进行开发，SpringBoot内置tomcat使项目部署运行非常方便。此项目利用微信接口测试号实现了每天早上定时推送模板消息（天气+纪念日+每日一句，也可自己更改模板进行开发）。项目还添加了一个极简的前端页面，可以实现部署到服务器后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信早安推送，保姆级教程">
+<meta property="og:url" content="https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/20/16-21-19/index.html">
+<meta property="og:site_name" content="LeoCache的博客">
+<meta property="og:description" content="【最新敲简单】微信早安推送 +页面总控， JAVA版本，一键部署运行——保姆级教程一、项目简介​    一个浪漫的早安推送小项目，采用Java+SpringBoot框架进行开发，SpringBoot内置tomcat使项目部署运行非常方便。此项目利用微信接口测试号实现了每天早上定时推送模板消息（天气+纪念日+每日一句，也可自己更改模板进行开发）。项目还添加了一个极简的前端页面，可以实现部署到服务器后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/355d14396f4841ae8c114ce7e70af05b.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/da9c32fcfaec44068c7a7d0c4731e6e6.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/774f296baf0a42bab142c6e73c5df72a.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7ca787eae60149e58ae94495ae1fe3f9.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/31a2b2add1db4866b337c49ed7f631af.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/222ee4875f35462c981565087209d83b.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6f26e2c960634915bf4a192330f97573.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e54707e2d90b4f849ad1c26e34622c34.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c6896d48bf4049e39055853cf9b55076.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/ac1c4fd27d754b19b5b9d2e49f82001e.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/770650babc6b44c88594238d47568afc.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6b9c37643ca1419f8b52623f46bc03ee.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/5fabfc56a6ff48a4a0d1b95512ed5399.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/0cd1461ac5ef4595ad57ea301526be72.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/cb476e93c02f490cac6a0170760c7473.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/cbad5b823c0048c1bf371fd80394b59c.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/dde5324cb1724f6ca5a3076e77da5f2e.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/8991ff31f3074537be47646f0c572768.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/fd5ceffa41154087b34c66f58d1bcaf9.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/040eb2534ba741c19ec4eec17f357c9c.png#pic_center">
+<meta property="article:published_time" content="2022-10-20T08:21:19.000Z">
+<meta property="article:modified_time" content="2022-10-21T08:46:51.014Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/355d14396f4841ae8c114ce7e70af05b.png#pic_center">
+
+
+<link rel="canonical" href="https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/20/16-21-19/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/20/16-21-19/","path":"2022/10/20/16-21-19/","title":"微信早安推送，保姆级教程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微信早安推送，保姆级教程 | LeoCache的博客</title>
+  
+
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LeoCache的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">用工程师的浪漫照亮科技的未来</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E3%80%90%E6%9C%80%E6%96%B0%E6%95%B2%E7%AE%80%E5%8D%95%E3%80%91%E5%BE%AE%E4%BF%A1%E6%97%A9%E5%AE%89%E6%8E%A8%E9%80%81-%E9%A1%B5%E9%9D%A2%E6%80%BB%E6%8E%A7%EF%BC%8C-JAVA%E7%89%88%E6%9C%AC%EF%BC%8C%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E8%BF%90%E8%A1%8C%E2%80%94%E2%80%94%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">【最新敲简单】微信早安推送 +页面总控， JAVA版本，一键部署运行——保姆级教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">一、项目简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%9C%AC%E5%9C%B0%E5%85%8B%E9%9A%86%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.2.</span> <span class="nav-text">二、本地克隆项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%94%B3%E8%AF%B7%E5%90%84%E7%A7%8D%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.3.</span> <span class="nav-text">三、申请各种接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%BE%AE%E4%BF%A1%E6%8E%A5%E5%8F%A3%E7%94%B3%E8%AF%B7"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、微信接口申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%A4%A9%E6%B0%94API%E6%8E%A5%E5%8F%A3%E7%94%B3%E8%AF%B7"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、天气API接口申请</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%90%8D%E8%A8%80API%E6%8E%A5%E5%8F%A3%E7%94%B3%E8%AF%B7"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、名言API接口申请</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95"><span class="nav-number">1.4.</span> <span class="nav-text">四、项目测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E4%BA%91%E4%B8%8A%E9%83%A8%E7%BD%B2%E8%BF%90%E8%A1%8C"><span class="nav-number">1.5.</span> <span class="nav-text">五、云上部署运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%88%9D%E5%A7%8B%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.5.1.</span> <span class="nav-text">1、初始服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E8%BF%9B%E5%85%A5%E5%AE%9D%E5%A1%94%E9%9D%A2%E6%9D%BF%E7%AE%A1%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.5.2.</span> <span class="nav-text">2、进入宝塔面板管理服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%B8%8A%E4%BC%A0%E9%A1%B9%E7%9B%AE%E5%B9%B6%E9%83%A8%E7%BD%B2"><span class="nav-number">1.5.3.</span> <span class="nav-text">3、上传项目并部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%A1%B9%E7%9B%AE%E5%AE%8C%E5%96%84"><span class="nav-number">1.6.</span> <span class="nav-text">六、项目完善</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/images/1652351988342.jpg">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description">学习 分享 积累</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/leocache" title="https:&#x2F;&#x2F;github.com&#x2F;leocache" rel="noopener" target="_blank">github</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/weixin_51342637?type=blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_51342637?type&#x3D;blog" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://myblog-qjb8n4gl-leocache.4everland.app/2022/10/20/16-21-19/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1652351988342.jpg">
+      <meta itemprop="name" content="Leo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LeoCache的博客">
+      <meta itemprop="description" content="学习 分享 积累">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="微信早安推送，保姆级教程 | LeoCache的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信早安推送，保姆级教程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-20 16:21:19" itemprop="dateCreated datePublished" datetime="2022-10-20T16:21:19+08:00">2022-10-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-10-21 16:46:51" itemprop="dateModified" datetime="2022-10-21T16:46:51+08:00">2022-10-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="【最新敲简单】微信早安推送-页面总控，-JAVA版本，一键部署运行——保姆级教程"><a href="#【最新敲简单】微信早安推送-页面总控，-JAVA版本，一键部署运行——保姆级教程" class="headerlink" title="【最新敲简单】微信早安推送 +页面总控， JAVA版本，一键部署运行——保姆级教程"></a>【最新敲简单】微信早安推送 +页面总控， JAVA版本，一键部署运行——保姆级教程</h1><h2 id="一、项目简介"><a href="#一、项目简介" class="headerlink" title="一、项目简介"></a>一、项目简介</h2><p>​    一个浪漫的早安推送小项目，采用Java+SpringBoot框架进行开发，SpringBoot内置tomcat使项目部署运行非常方便。此项目利用微信接口测试号实现了每天早上定时推送模板消息（天气+纪念日+每日一句，也可自己更改模板进行开发）。项目还添加了一个极简的前端页面，可以实现部署到服务器后不停止项目直接更改天气地址和直接点击立即发送。网上的使用Java开发此项目的非常少，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq15347747/article/details/126521774?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166627722516782428689277%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=166627722516782428689277&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-3-126521774-null-null.142%5Ev59%5Ejs_top,201%5Ev3%5Eadd_ask&utm_term=%E5%BE%AE%E4%BF%A1%E6%8E%A8%E9%80%81&spm=1018.2226.3001.4187">也非常感谢这篇文章让我少绕了很多弯路</a>，其实这个博主写的已经非常详细了，我的消息模板也是搬过来的这位博主的，此文就来丰富一下Java版本的选择吧。先来看几张结果：<br>![Alt](<a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/98929bdbf4cb42769a930cd0df26486c.png#pic_center#pic_center">https://img-blog.csdnimg.cn/98929bdbf4cb42769a930cd0df26486c.png#pic_center#pic_center</a> =300x400)<img src="https://img-blog.csdnimg.cn/355d14396f4841ae8c114ce7e70af05b.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="二、本地克隆项目"><a href="#二、本地克隆项目" class="headerlink" title="二、本地克隆项目"></a>二、本地克隆项目</h2><p>​    项目仓库在Gitee::link:<a target="_blank" rel="noopener" href="https://gitee.com/li-haoaa/romantic-wechat-push%EF%BC%8C%E8%BF%99%E9%87%8C%E6%8F%90%E4%BE%9B%E5%87%A0%E7%A7%8D%E5%85%8B%E9%9A%86%E6%96%B9%E5%BC%8F%EF%BC%9A">https://gitee.com/li-haoaa/romantic-wechat-push，这里提供几种克隆方式：</a></p>
+<p>1、直接打开链接，点击下载zip即可，然后解压缩，在idea或者eclipse里面打开项目就好了。</p>
+<p>2、利用idea内嵌的组件，依次点击上方VCS、Get From Version Control，在弹框中粘贴上去上方的网址即可。不同版本idea基本一致。eclipse也有此功能，可直接网上搜。这里还是建议大家采用IDEA,在maven上有很大优势。<br>![在这里插入图片描述](<a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/bb47716806164a30b9f05b5e100ad8f2.png#pic_center">https://img-blog.csdnimg.cn/bb47716806164a30b9f05b5e100ad8f2.png#pic_center</a> =160x200)<br>3、打开\wechatPushing\src\main\resources\application.yml，配置文件如下图：我们接下来要填充下划线部分，记得把纪念日改了。<br><img src="https://img-blog.csdnimg.cn/da9c32fcfaec44068c7a7d0c4731e6e6.png#pic_center" alt="alt"></p>
+<h2 id="三、申请各种接口"><a href="#三、申请各种接口" class="headerlink" title="三、申请各种接口"></a>三、申请各种接口</h2><p>​    简单介绍一下工作原理，你可以把刚才加载的项目理解为小的后台服务器，我们设定了机制，在每天设定的时间它会自动调用方法去第三方网站获取当日的天气和每日一句名言，没错，就是通过api调用。然后将请求过来的数据进行各种处理，转化成一个微信接口能听懂的语言发送过去，微信再进行模板处理把消息推送出去，我们这一步要做的就是申请这些第三方网站的api和微信接口api。</p>
+<h3 id="1、微信接口申请"><a href="#1、微信接口申请" class="headerlink" title="1、微信接口申请"></a>1、微信接口申请</h3><ul>
+<li>打开<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index">微信公众平台</a>，扫码登录按照要求完成认证。之后得到这一步：<br><img src="https://img-blog.csdnimg.cn/774f296baf0a42bab142c6e73c5df72a.png#pic_center" alt="在这里插入图片描述"></li>
+</ul>
+<p>appID和appsecret就是我们需要的填到上方提到的配置文件中。你可以简单理解为接口的账号和密码。</p>
+<ul>
+<li><p>然后你和要推送的对象（lover）扫码关注，下图中的微信号填到配置文件的receiver中，注意前面的-不要去掉，直接粘贴到双引号中即可。如果有第二个，就把下方的#删除直接粘贴即可。（如果你学过springboot就知道原因）</p>
+</li>
+<li><p><img src="https://img-blog.csdnimg.cn/7ca787eae60149e58ae94495ae1fe3f9.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li><p>最后需要给你的微信添加消息模板，这里的模板是用的别人的，有想法的也可以自己修改。直接点击新增测试模板，把下面的复制进去，将生日名字改了就OK,这里面双括号包含的就是根据服务器发来的请求进行动态填充的部分，其他部分是静态不变的。你了解后可以充分想象自定义模板。然后把模板ID填到上面配置文件中的templateId中就好。<br><img src="https://img-blog.csdnimg.cn/31a2b2add1db4866b337c49ed7f631af.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;first.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">城市：&#123;&#123;city.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">实况天气：&#123;&#123;weather.DATA&#125;&#125;</span><br><span class="line">气温：&#123;&#123;minTemperature.DATA&#125;&#125; ~ &#123;&#123;maxTemperature.DATA&#125;&#125;</span><br><span class="line">风速：&#123;&#123;wind.DATA&#125;&#125;</span><br><span class="line">湿度：&#123;&#123;wet.DATA&#125;&#125;</span><br><span class="line">今天~后天：&#123;&#123;day1_wea.DATA&#125;&#125;,&#123;&#123;day2_wea.DATA&#125;&#125;,&#123;&#123;day3_wea.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">♥在一起♥: &#123;&#123;togetherDate.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">距离XX生日：&#123;&#123;birthDate1.DATA&#125;&#125;</span><br><span class="line">距离XX生日：&#123;&#123;birthDate2.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;note_En.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123;note_Zh.DATA&#125;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、天气API接口申请"><a href="#2、天气API接口申请" class="headerlink" title="2、天气API接口申请"></a>2、天气API接口申请</h3><p>​    <a target="_blank" rel="noopener" href="https://yikeapi.com/account/index">点击这里跳转去申请</a>，注册成功后会出现<br><img src="https://img-blog.csdnimg.cn/222ee4875f35462c981565087209d83b.png#pic_center" alt="在这里插入图片描述"></p>
+<p>把配置文件中的Weather模块appid和appsecret补充上去，把city进行修改，虽然提供了前端页面修改城市，但还是建议大家通过这里修改，因为api原因前端页面修改的有时会出现一些bug，我后期会考虑使用百度的天气api接口替换可以改善这个问题。</p>
+<h3 id="3、名言API接口申请"><a href="#3、名言API接口申请" class="headerlink" title="3、名言API接口申请"></a>3、名言API接口申请</h3><p><a target="_blank" rel="noopener" href="https://www.apispace.com/eolink/api/myjj/apiDocument?apiStatus=PUBLISH&register=1">点击这里跳转注册登录</a>，然后点击购买套餐，有一个免费的套餐，新用户也有一个1000次的可以免费购买。之后点击右上角头像，进入这个页面<br><img src="https://img-blog.csdnimg.cn/6f26e2c960634915bf4a192330f97573.png#pic_center" alt="在这里插入图片描述"></p>
+<p>复制下来Token，粘贴到配置文件中的名言警句token处，这个网站还提供了历史上的今天等很多实用的api，想要自己改消息模板的都可以使用。</p>
+<h2 id="四、项目测试"><a href="#四、项目测试" class="headerlink" title="四、项目测试"></a>四、项目测试</h2><p>如果你本地jdk环境没有问题，idea也没有问题，那么你的项目现在就可以运行了，打开项目中的WechatPushingApplication，点击运行即可。<br><img src="https://img-blog.csdnimg.cn/e54707e2d90b4f849ad1c26e34622c34.png#pic_center" alt="在这里插入图片描述"></p>
+<p>然后打开浏览器，输入“<a target="_blank" rel="noopener" href="http://localhost:60001/%E2%80%9D%EF%BC%8C%E5%8F%AA%E6%9C%89%E4%BD%A0%E7%9A%84%E9%A1%B9%E7%9B%AE%E8%BF%90%E8%A1%8C%E8%B5%B7%E6%9D%A5%E8%BF%99%E4%B8%AA%E7%95%8C%E9%9D%A2%E6%89%8D%E8%83%BD%E8%AE%BF%E9%97%AE%E8%BF%9B%E5%8E%BB%E3%80%82%E7%82%B9%E5%87%BB%E7%AB%8B%E5%8D%B3%E5%8F%91%E9%80%81%E5%8D%B3%E5%8F%AF%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95%E3%80%82%E5%A6%82%E6%9E%9C%E4%BD%A0%E7%9A%84%E5%BE%AE%E4%BF%A1%E8%83%BD%E6%AD%A3%E5%B8%B8%E6%94%B6%E5%88%B0%E6%8E%A8%E9%80%81%E6%B6%88%E6%81%AF%E5%B0%B1%E8%AF%B4%E6%98%8E%E6%B2%A1%E6%9C%89%E9%97%AE%E9%A2%98%E4%BA%86%E3%80%82">http://localhost:60001/”，只有你的项目运行起来这个界面才能访问进去。点击立即发送即可进行测试。如果你的微信能正常收到推送消息就说明没有问题了。</a><br><img src="https://img-blog.csdnimg.cn/c6896d48bf4049e39055853cf9b55076.png#pic_center" alt="在这里插入图片描述"></p>
+<p>但是目前你只能手动点击发送，或者让项目在你的电脑上不停运行，每天定时自动推送，定时时间在MessageController中进行修改，下图是项目默认的每天7:30推送。三个数字分别是秒分时，其他的较为复杂的规则大家可以搜索@Scheduled用法。</p>
+<p><img src="https://img-blog.csdnimg.cn/ac1c4fd27d754b19b5b9d2e49f82001e.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="五、云上部署运行"><a href="#五、云上部署运行" class="headerlink" title="五、云上部署运行"></a>五、云上部署运行</h2><p>虽然已经成功，但是目前为止你必须手动点击发送或者让项目不停的在你的电脑上运行实现定时发送，这显然和你预期的“自动定时发送”不一致，要想实现自动定时发送需要我们将项目部署到云服务器上。</p>
+<h3 id="1、初始服务器"><a href="#1、初始服务器" class="headerlink" title="1、初始服务器"></a>1、初始服务器</h3><p><a target="_blank" rel="noopener" href="https://url.cn/646RdtyS">腾讯云特惠链接</a>，趁着活动可以购买或者体验云服务器，建议选择轻量应用服务器，方便高效还便宜。镜像就选择宝塔Linux就好，宝塔面板自动搭建好非常的方便。<br>![在这里插入图片描述](<a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/87fcd8b3376e459fbdf1b9d0248dfe2f.png#pic_center">https://img-blog.csdnimg.cn/87fcd8b3376e459fbdf1b9d0248dfe2f.png#pic_center</a> =300x300)</p>
+<p>等待几分钟初始化完成进入轻量应用服务器控制台点击你自己的实例就会到这个界面：<br><img src="https://img-blog.csdnimg.cn/770650babc6b44c88594238d47568afc.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="2、进入宝塔面板管理服务器"><a href="#2、进入宝塔面板管理服务器" class="headerlink" title="2、进入宝塔面板管理服务器"></a>2、进入宝塔面板管理服务器</h3><p>点击登录之后会一键登录到你的远程机，输入命令sudo /etc/init.d/bt default会获取到你的面板账号和密码<br><img src="https://img-blog.csdnimg.cn/6b9c37643ca1419f8b52623f46bc03ee.png#pic_center" alt="在这里插入图片描述"></p>
+<p>打开得到的外网面板地址，用账号和密码登录就进入了宝塔面板管理页面，第一次登录需要安装一些软件环境，根据指导安装即可。<br><img src="https://img-blog.csdnimg.cn/5fabfc56a6ff48a4a0d1b95512ed5399.png#pic_center" alt="在这里插入图片描述"></p>
+<p>然后进入软件商店，安装Java项目一键部署</p>
+<p><img src="https://img-blog.csdnimg.cn/0cd1461ac5ef4595ad57ea301526be72.png#pic_center" alt="在这里插入图片描述"></p>
+<p>然后从首页进入一键部署：</p>
+<p><img src="https://img-blog.csdnimg.cn/cb476e93c02f490cac6a0170760c7473.png#pic_center" alt="在这里插入图片描述"></p>
+<p>进去先安装tomcat8，虽然我们的springboot的jar包已经包含tomcat，我们在这里安装tomcat的目的是他会帮我们自动安装jdk8。<br><img src="https://img-blog.csdnimg.cn/cbad5b823c0048c1bf371fd80394b59c.png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="3、上传项目并部署"><a href="#3、上传项目并部署" class="headerlink" title="3、上传项目并部署"></a>3、上传项目并部署</h3><p>打开idea，右侧maven栏，选择clean和package然后点击上方运行进行打包。之后target中就会出现jar包，右键open in explore在文件夹中打开<br>![在这里插入图片描述](<a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/96e4552130e34b4486ee57a7186b0a68.png#pic">https://img-blog.csdnimg.cn/96e4552130e34b4486ee57a7186b0a68.png#pic</a> =250x200)![在这里插入图片描述](<a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/d33fd2380f524d56a331b5806c7b5778.png#pic">https://img-blog.csdnimg.cn/d33fd2380f524d56a331b5806c7b5778.png#pic</a> =250x200)</p>
+<p>然后打开宝塔面板的文件，找到/www/wwwroot目录，将刚刚打好的jar包上传。<br><img src="https://img-blog.csdnimg.cn/dde5324cb1724f6ca5a3076e77da5f2e.png#pic_center" alt="在这里插入图片描述"></p>
+<p>进入java一键部署页面，选择springboot，添加项目，选择好jdk，记住分配的端口号。（这里有时经常部署不上去，策略一：多试几次，策略二：复制执行命令，自己粘贴到服务器终端执行）<br>![在这里插入图片描述](<a target="_blank" rel="noopener" href="https://img-blog.csdnimg.cn/bdd86a32baed4bd7a2f8ef96b7cff7ba.png#pic_center">https://img-blog.csdnimg.cn/bdd86a32baed4bd7a2f8ef96b7cff7ba.png#pic_center</a> =500x400)</p>
+<p>最后，进入腾讯云控制台，打开防火墙，将刚刚的端口添加进去即可，大功告成了。<br><img src="https://img-blog.csdnimg.cn/8991ff31f3074537be47646f0c572768.png#pic_center" alt="在这里插入图片描述"></p>
+<p>这样就完成了自动推送，如果你想更改天气地址或者立即推送消息，进入：http://公网ip:端口号/，公网ip就是腾讯云控制台顶端的ip地址，端口号是上一步的端口号。这样你可以进入熟悉的页面。<br><img src="https://img-blog.csdnimg.cn/fd5ceffa41154087b34c66f58d1bcaf9.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/040eb2534ba741c19ec4eec17f357c9c.png#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="六、项目完善"><a href="#六、项目完善" class="headerlink" title="六、项目完善"></a>六、项目完善</h2><p>如果你有经验，完全可以丰富这个项目，比如说使用数据库系统，把每次推送记录进去，然后在前端页面做出推送记录模块。也可以自定义修改api，接入一些新的功能……</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/19/16-40-36/" rel="prev" title="HuffmanTree">
+                  <i class="fa fa-chevron-left"></i> HuffmanTree
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+</body>
+</html>
