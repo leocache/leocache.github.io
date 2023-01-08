@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"myblog-qjb8n4gl-leocache.4everland.app","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Nginx+Nacos2.2.0搭建集群遇坑指南这几天刚刚开始学习Nacos，恰好重磅升级的Nacos2.2.0正式版刚刚发布不久，我直接忽略了老师讲解使用的1.1.4版本和SpringCloudAlibaba2.2.9版本推荐的2.1.0，直接选择了2.2.0，后者选择2.1.0和2.2.0的关系倒不是很大，但是1.x和2.x有太多的不一样，导致我花了两整天的时间捣鼓遇到的一个又一个坑。 坑一：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx+Nacos2.2.0搭建集群遇坑指南">
+<meta property="og:url" content="https://myblog-qjb8n4gl-leocache.4everland.app/2023/01/08/17-13-29/index.html">
+<meta property="og:site_name" content="LeoCache的博客">
+<meta property="og:description" content="Nginx+Nacos2.2.0搭建集群遇坑指南这几天刚刚开始学习Nacos，恰好重磅升级的Nacos2.2.0正式版刚刚发布不久，我直接忽略了老师讲解使用的1.1.4版本和SpringCloudAlibaba2.2.9版本推荐的2.1.0，直接选择了2.2.0，后者选择2.1.0和2.2.0的关系倒不是很大，但是1.x和2.x有太多的不一样，导致我花了两整天的时间捣鼓遇到的一个又一个坑。 坑一：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/43c2b1f07f9e4e9a8721f104415ff843.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/155d968dff4144f585a5f98a67a33887.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/26b85593b744411b80fb894c01e5f2b7.png">
+<meta property="article:published_time" content="2023-01-08T09:13:29.000Z">
+<meta property="article:modified_time" content="2023-01-08T09:14:27.785Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="blog">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/43c2b1f07f9e4e9a8721f104415ff843.png">
+
+
+<link rel="canonical" href="https://myblog-qjb8n4gl-leocache.4everland.app/2023/01/08/17-13-29/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://myblog-qjb8n4gl-leocache.4everland.app/2023/01/08/17-13-29/","path":"2023/01/08/17-13-29/","title":"Nginx+Nacos2.2.0搭建集群遇坑指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Nginx+Nacos2.2.0搭建集群遇坑指南 | LeoCache的博客</title>
+  
+
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-postbottom {
+  cursor: pointer;
+  height: 26px;
+  margin-top: 10px;
+  position: relative;
+}
+#needsharebutton-postbottom .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 3px;
+  display: initial;
+  padding: 1px 4px;
+}
+</style>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">LeoCache的博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">用工程师的浪漫照亮科技的未来</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-Nacos2-2-0%E6%90%AD%E5%BB%BA%E9%9B%86%E7%BE%A4%E9%81%87%E5%9D%91%E6%8C%87%E5%8D%97"><span class="nav-number">1.</span> <span class="nav-text">Nginx+Nacos2.2.0搭建集群遇坑指南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%91%E4%B8%80%EF%BC%9A64%E4%BD%8Djdk8"><span class="nav-number">1.1.</span> <span class="nav-text">坑一：64位jdk8+</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%912%EF%BC%9ANacos2-x%E4%BD%BF%E7%94%A8grpc%E9%80%9A%E4%BF%A1"><span class="nav-number">1.2.</span> <span class="nav-text">坑2：Nacos2.x使用grpc通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E4%B8%80%EF%BC%8C%E4%BD%BF%E7%94%A8http%E9%80%9A%E4%BF%A1%EF%BC%9A"><span class="nav-number">1.2.1.</span> <span class="nav-text">解决方法一，使用http通信：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E4%BA%8C%EF%BC%8CNginx%E4%BD%BF%E7%94%A8TCP%E4%BB%A3%E7%90%86%EF%BC%9A"><span class="nav-number">1.2.2.</span> <span class="nav-text">解决方法二，Nginx使用TCP代理：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E7%89%88%E6%9C%AC%E9%80%89%E7%94%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">新版本选用问题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/images/1652351988342.jpg">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description">学习 分享 积累</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/leocache" title="https:&#x2F;&#x2F;github.com&#x2F;leocache" rel="noopener" target="_blank">github</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/weixin_51342637?type=blog" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_51342637?type&#x3D;blog" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://myblog-qjb8n4gl-leocache.4everland.app/2023/01/08/17-13-29/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1652351988342.jpg">
+      <meta itemprop="name" content="Leo">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LeoCache的博客">
+      <meta itemprop="description" content="学习 分享 积累">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Nginx+Nacos2.2.0搭建集群遇坑指南 | LeoCache的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Nginx+Nacos2.2.0搭建集群遇坑指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-01-08 17:13:29 / 修改时间：17:14:27" itemprop="dateCreated datePublished" datetime="2023-01-08T17:13:29+08:00">2023-01-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Nginx-Nacos2-2-0搭建集群遇坑指南"><a href="#Nginx-Nacos2-2-0搭建集群遇坑指南" class="headerlink" title="Nginx+Nacos2.2.0搭建集群遇坑指南"></a>Nginx+Nacos2.2.0搭建集群遇坑指南</h1><p>这几天刚刚开始学习Nacos，恰好重磅升级的Nacos2.2.0正式版刚刚发布不久，我直接忽略了老师讲解使用的1.1.4版本和SpringCloudAlibaba2.2.9版本推荐的2.1.0，直接选择了2.2.0，后者选择2.1.0和2.2.0的关系倒不是很大，但是1.x和2.x有太多的不一样，导致我花了两整天的时间捣鼓遇到的一个又一个坑。</p>
+<h2 id="坑一：64位jdk8"><a href="#坑一：64位jdk8" class="headerlink" title="坑一：64位jdk8+"></a>坑一：64位jdk8+</h2><p>启动Nacos后通过start.out看到总是报错，错误信息是：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name &#x27;instanceOperatorClientImpl&#x27;</span><br><span class="line">Caused by: java.lang.UnsatisfiedLinkError: libjawt.so: 无法打开共享对象文件: 没有那个文件或目录</span><br><span class="line">此处省略无数异常 大概都是springboot启动的错误，各种Error creating”</span><br></pre></td></tr></table></figure>
+
+<p>我又安装了Nacos1.1.4尝试，结果成功启动。那这就很可能是环境问题，打开Nacos官网手册一看，首页就是：</p>
+<img src="https://img-blog.csdnimg.cn/43c2b1f07f9e4e9a8721f104415ff843.png" alt="image-20230108155841778" style="zoom:70%;" />
+
+<p>然后我就查了我在linux上的环境，也没有什么错误啊，直到过了很久才发现我的jdk是x86即32位，换了x64之后成功启动。</p>
+<h2 id="坑2：Nacos2-x使用grpc通信"><a href="#坑2：Nacos2-x使用grpc通信" class="headerlink" title="坑2：Nacos2.x使用grpc通信"></a>坑2：Nacos2.x使用grpc通信</h2><p>在Nacos集群，Nginx反向代理都完成后，我测试了Nacos作为配置中心的功能，结果很完美。就当我测试最后一步作为服务注册中心功能时，微服务又报错：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">com.alibaba.nacos.api.exception.NacosException: Client not connected, current status:STARTING</span><br></pre></td></tr></table></figure>
+
+<p>nginx反向代理配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">upstream nacoscluster&#123;</span><br><span class="line">        server 192.168.241.129:3333;</span><br><span class="line">        server 192.168.241.129:4444;</span><br><span class="line">        server 192.168.241.129:5555;</span><br><span class="line">      &#125;</span><br><span class="line">      server&#123;</span><br><span class="line">        listen 1111;</span><br><span class="line">        server_name 192.168.241.129;</span><br><span class="line">  </span><br><span class="line">        location / &#123;</span><br><span class="line">        proxy_pass http://nacoscluster;</span><br><span class="line">        &#125; </span><br></pre></td></tr></table></figure>
+
+<p>微服务配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: nacos-payment-provider</span><br><span class="line">  cloud:</span><br><span class="line">    nacos:</span><br><span class="line">      discovery:</span><br><span class="line">        server-addr: 192.168.241.129:1111</span><br></pre></td></tr></table></figure>
+
+<p>配置看起来和老师一模一样，那就还是版本新特性问题，其实Nacos2.x服务端是支持http2和grpc两种通信方式的，但是我们Maven中导入的客户端版本是2.1.0，client客户端在2.x版本中使用 grpc 调用，那显然我们使用nginx进行http代理是不靠谱的。</p>
+<p><img src="https://img-blog.csdnimg.cn/155d968dff4144f585a5f98a67a33887.png" alt="image-20230108161721489"></p>
+<h3 id="解决方法一，使用http通信："><a href="#解决方法一，使用http通信：" class="headerlink" title="解决方法一，使用http通信："></a>解决方法一，使用http通信：</h3><p>那第一种解决方法就是直接把客户端版本降低,替换成1.x版本，问题成功解决：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.nacos<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>nacos-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，既然选择了Nacos2.x服务端，那最好还是用对应的2.x客户端，毕竟据官方宣传Nacos2.0的性能相较于1.x提升近10倍，2.x默认使用grpc调用通信原因就是grpc的低延迟和高吞吐量特性。</p>
+<h3 id="解决方法二，Nginx使用TCP代理："><a href="#解决方法二，Nginx使用TCP代理：" class="headerlink" title="解决方法二，Nginx使用TCP代理："></a>解决方法二，Nginx使用TCP代理：</h3><p>官网有这样一句话<strong>使用VIP/nginx请求时，需要配置成TCP转发，不能配置http2转发，否则连接会被nginx断开。</strong>Nginx如何实现TCP转发有很多博文，这里就不写了，主要是需要添加一个插件–with-stream。</p>
+<p>nginx添加配置（http的不用动，浏览器访问依旧需要）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">stream&#123;</span><br><span class="line">     upstream nacoscluster&#123;</span><br><span class="line">         server 192.168.241.129:4333;</span><br><span class="line">         server 192.168.241.129:5444;</span><br><span class="line">         server 192.168.241.129:6555;</span><br><span class="line">       &#125;</span><br><span class="line">       server&#123;</span><br><span class="line">         listen 2111;</span><br><span class="line">         proxy_pass nacoscluster;  </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意这个stream是和上面的http平级的。至于端口为什么比http里面的多1000，是因为我们上面提到的Nacos2.x客户端和服务端使用grpc调用，这里的端口是grpc端口，GRPC port = 主端口 + grpc端口偏移量，Nacos源码中设置偏移量默认1000。</p>
+<p>微服务注册配置是不需要修改的，因为微服务注册配置的是主端口，所以还是1111。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: nacos-payment-provider</span><br><span class="line">  cloud:</span><br><span class="line">    nacos:</span><br><span class="line">      discovery:</span><br><span class="line">        server-addr: 192.168.241.129:1111</span><br></pre></td></tr></table></figure>
+
+<p>最后，终于完成了Nacos2.2.0+Nginx实现Nacos集群的配置，成功将微服务注册：</p>
+<p><img src="https://img-blog.csdnimg.cn/26b85593b744411b80fb894c01e5f2b7.png" alt="image-20230108165109903"></p>
+<h2 id="新版本选用问题"><a href="#新版本选用问题" class="headerlink" title="新版本选用问题"></a>新版本选用问题</h2><p>我在使用东西的时候总爱去使用一些较为新的版本，与老师使用的不同，很可能就会导致很多兼容问题。但是我感觉遇到这种问题通过自己一步步的解决可能比使用与老师一样的版本按部就班的要更有意义。因为在微服务时代，性能的优化是非常重要的，新版本肯定在性能上比旧版本有不小提升，就比如Nacos2.x比Nacos1.x有近10倍性能提升，但是新版本也不是随便使用的，你不能使用一个SpringCloudAlibaba低版本与最新的Nacos或者其他组件去搭建，那问题肯定会更多，还是要遵循官方的版本关系建议。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer"><div class="post-widgets">
+      <div id="needsharebutton-postbottom">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/20/16-21-19/" rel="prev" title="微信早安推送，保姆级教程">
+                  <i class="fa fa-chevron-left"></i> 微信早安推送，保姆级教程
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      pbOptions = {};
+        pbOptions.iconStyle = "box";
+        pbOptions.boxForm = "horizontal";
+        pbOptions.position = "bottomCenter";
+        pbOptions.networks = "Wechat,QQZone,Weibo,Douban,Twitter,Facebook";
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+  </script>
+</body>
+</html>
